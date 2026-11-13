@@ -1,0 +1,120 @@
+/*
+ * Nelson Galley — Encarts : styles front-end.
+ * Les couleurs reprennent celles du thème si elles existent (--ng-*, --cs-*),
+ * sinon des valeurs par défaut (vert émeraude). Pour personnaliser, redéfinissez
+ * --nge-accent, --nge-badge-bg… dans le CSS de votre thème.
+ */
+.ng-encart {
+  --nge-accent: var(--ng-accent, #10b981);
+  --nge-accent-hover: var(--ng-accent-hover, #059669);
+  --nge-accent-glow: var(--ng-accent-glow, rgba(16, 185, 129, 0.32));
+  --nge-accent-glow-hover: var(--ng-accent-glow-hover, rgba(16, 185, 129, 0.45));
+  --nge-badge-border: var(--ng-badge-border, rgba(16, 185, 129, 0.30));
+  --nge-badge-bg: var(--ng-badge-bg, rgba(16, 185, 129, 0.10));
+  --nge-badge-text: var(--ng-badge-text, #065f46);
+}
+
+.ng-encart {
+  display: grid;
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+  align-items: stretch;
+  overflow: hidden;
+  margin: 2.5rem 0;
+  border: 1.5px solid var(--nge-badge-border);
+  border-radius: 20px;
+  background: var(--cs-layout-background, #ffffff);
+  box-shadow: 0 16px 48px rgba(16, 185, 129, 0.08);
+}
+.ng-encart--no-img { grid-template-columns: 1fr; }
+.ng-encart__media { min-height: 100%; background: var(--nge-badge-bg); }
+.ng-encart__media img,
+.ng-encart .ng-encart__img {
+  display: block;
+  width: 100% !important;
+  height: 100% !important;
+  max-height: none !important;
+  margin: 0 !important;
+  border-radius: 0 !important;
+  object-fit: cover;
+  aspect-ratio: 16 / 10;
+}
+.ng-encart__body {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 28px 30px;
+}
+.entry-content .ng-encart p,
+.ng-encart p { margin: 0 !important; }
+.ng-encart__badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 12px 4px 22px;
+  border: 0.5px solid var(--nge-badge-border);
+  border-radius: 999px;
+  background:
+    radial-gradient(circle at 11px 50%, var(--nge-accent) 3px, transparent 3.5px),
+    var(--nge-badge-bg);
+  color: var(--nge-badge-text);
+  font-family: "Poppins", sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.ng-encart__title {
+  color: var(--cs-color-primary, #111827);
+  font-family: "Questrial", sans-serif !important;
+  font-size: 1.45rem !important;
+  line-height: 1.25 !important;
+  letter-spacing: -0.01em;
+}
+.ng-encart__text { color: var(--cs-color-secondary, #6b7280); font-size: 0.95rem !important; line-height: 1.65 !important; }
+.ng-encart__info { color: var(--cs-color-primary, #111827); font-size: 0.875rem !important; font-weight: 500; }
+.entry-content a.ng-encart__btn,
+a.ng-encart__btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 6px;
+  padding: 11px 22px;
+  border-radius: 999px;
+  background: var(--nge-accent) !important;
+  box-shadow: 0 4px 16px var(--nge-accent-glow);
+  color: #fff !important;
+  font-family: "Poppins", sans-serif;
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-decoration: none !important;
+  transition: background 0.25s, box-shadow 0.25s;
+}
+a.ng-encart__btn:hover { background: var(--nge-accent-hover) !important; box-shadow: 0 8px 24px var(--nge-accent-glow-hover); }
+.ng-encart__advertiser { color: var(--cs-color-secondary, #6b7280); font-size: 0.75rem !important; }
+
+/* Partenaire / Sponsorisé : style neutre, clairement distinct de vos offres */
+.ng-encart--sponsorise,
+.ng-encart--partenaire { border-color: var(--cs-color-border, #e5e7eb); box-shadow: none; }
+.ng-encart--sponsorise .ng-encart__badge,
+.ng-encart--partenaire .ng-encart__badge {
+  border-color: var(--cs-color-border, #e5e7eb);
+  background:
+    radial-gradient(circle at 11px 50%, var(--cs-color-secondary, #6b7280) 3px, transparent 3.5px),
+    var(--cs-color-highlight-background, #f3f4f6);
+  color: var(--cs-color-secondary, #6b7280);
+}
+/* Événement : accent ambre pour la date */
+.ng-encart--evenement .ng-encart__info { color: #b45309; }
+
+/* Accueil : encart pleine largeur au-dessus de la grille */
+.ng-encart-wrap--home { margin: 0 0 3rem; }
+.ng-encart-wrap--home .ng-encart { margin: 0; }
+
+@media (max-width: 767px) {
+  .ng-encart { grid-template-columns: 1fr; }
+  .ng-encart__body { padding: 22px 20px 24px; }
+  .ng-encart__title { font-size: 1.25rem !important; }
+}
+

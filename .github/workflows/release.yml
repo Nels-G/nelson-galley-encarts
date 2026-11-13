@@ -1,0 +1,40 @@
+name: Release
+
+# Publie une release avec le zip installable quand on pousse une étiquette vX.Y.Z.
+on:
+  push:
+    tags:
+      - "v*.*.*"
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Vérifier que l'étiquette correspond à la version du plugin
+        run: |
+          TAG="${GITHUB_REF_NAME#v}"
+          HEADER=$(grep -m1 -E '^\s*\*\s*Version:' nelson-galley-encarts.php | awk '{print $NF}')
+          CONST=$(grep -m1 "'NGE_VERSION'" nelson-galley-encarts.php | grep -oE "[0-9]+\.[0-9]+\.[0-9]+")
+          echo "Étiquette: $TAG | En-tête: $HEADER | Constante: $CONST"
+          if [ "$TAG" != "$HEADER" ] || [ "$TAG" != "$CONST" ]; then
+            echo "::error::La version de l'étiquette ($TAG) doit être identique à l'en-tête Version ($HEADER) et à NGE_VERSION ($CONST)."
+            exit 1
+          fi
+
+      - name: Construire nelson-galley-encarts.zip
+        run: |
+          mkdir -p build/nelson-galley-encarts
+          rsync -a --exclude '.git' --exclude '.github' --exclude 'build' --exclude '.gitignore' --exclude '.gitattributes' ./ build/nelson-galley-encarts/
+          cd build && zip -rq nelson-galley-encarts.zip nelson-galley-encarts
+          unzip -l nelson-galley-encarts.zip
+
+      - name: Publier la release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: build/nelson-galley-encarts.zip
+          generate_release_notes: true
